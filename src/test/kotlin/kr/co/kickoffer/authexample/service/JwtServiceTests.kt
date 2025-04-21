@@ -15,7 +15,6 @@ class JwtServiceTests {
         val dto = JwtClaimDto(
             id = "testId",
             email = "test@aladin.co.kr",
-            exp = System.currentTimeMillis() + 1000 * 60,
             iat = System.currentTimeMillis()
         )
 

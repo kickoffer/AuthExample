@@ -18,7 +18,6 @@ class JwtServiceImpl: JwtService {
     private final val key = Keys.hmacShaKeyFor(secretKey.toByteArray())
 
     override fun create(dto: JwtClaimDto): String {
-//        val key = Keys.hmacShaKeyFor(secretKey.toByteArray())
         val expireAt = LocalDateTime.now().plusMinutes(1)
         val exp = Date.from(expireAt.atZone(ZoneId.systemDefault()).toInstant())
         return builder()
@@ -29,17 +28,10 @@ class JwtServiceImpl: JwtService {
     }
 
     override fun validate(token: String) {
-//        val key = Keys.hmacShaKeyFor(secretKey.toByteArray())
-
-        val parser = parser()
-            .verifyWith(key)
-            .build()
 
         try {
-            val result = parser.parseSignedClaims(token)
-            result.payload.forEach({ k, v ->
-                println("$k: $v")
-            })
+            val payload = extract(token)
+            println(payload)
         } catch (e: Exception) {
             if (e is io.jsonwebtoken.security.SignatureException) {
                 throw RuntimeException("Invalid signature")
@@ -51,5 +43,20 @@ class JwtServiceImpl: JwtService {
 
         }
 
+    }
+
+    override fun extract(token: String): JwtClaimDto {
+        val parser = parser()
+            .verifyWith(key)
+            .build()
+
+        val result = parser.parseSignedClaims(token)
+        val claims = result.payload
+
+        return JwtClaimDto(
+            id = claims["id"] as String,
+            email = claims["email"] as String,
+            iat = (claims["iat"] as Number).toLong()
+        )
     }
 }

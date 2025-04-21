@@ -26,6 +26,8 @@ repositories {
 
 extra["springCloudVersion"] = "2024.0.1"
 
+val exposedVersion="0.57.0"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -33,6 +35,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    runtimeOnly("com.mysql:mysql-connector-j")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
 
@@ -43,6 +46,14 @@ dependencies {
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
+    implementation("org.jetbrains.exposed:exposed-core:${exposedVersion}")
+    implementation("org.jetbrains.exposed:exposed-crypt:${exposedVersion}")
+    implementation("org.jetbrains.exposed:exposed-dao:${exposedVersion}")
+    implementation("org.jetbrains.exposed:exposed-jdbc:${exposedVersion}")
+    implementation("org.jetbrains.exposed:exposed-java-time:${exposedVersion}")
+    implementation("org.jetbrains.exposed:exposed-json:${exposedVersion}")
+    implementation("org.jetbrains.exposed:exposed-money:${exposedVersion}")
+    implementation("org.jetbrains.exposed:exposed-spring-boot-starter:${exposedVersion}")
 
 
 
