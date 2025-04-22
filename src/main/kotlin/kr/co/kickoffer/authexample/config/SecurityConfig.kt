@@ -19,7 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource
 @EnableWebSecurity
 class SecurityConfig(
     private val adminUserDetailsService: AdminUserDetailsService,
-    private val authenticationProvider: AdminAuthenticationProvider,
+//    private val authenticationProvider: AdminAuthenticationProvider,
     private val jwtService: JwtService
 ) {
 
@@ -50,18 +50,20 @@ class SecurityConfig(
         .authorizeHttpRequests { auth ->
             // Allow Public Access
             auth.requestMatchers("/css/**").permitAll()
+            auth.requestMatchers("/js/**").permitAll()
+            auth.requestMatchers("/api/auth/**").permitAll()
 
             // Allow Authenticated Access
-            auth.requestMatchers("/admin/**")
-                .hasAnyRole("ADMIN")
-                .anyRequest()
-                .authenticated()
+//            auth.requestMatchers("/admin/**")
+//                .hasAnyRole("ADMIN")
+//                .anyRequest()
+//                .authenticated()
         }
         .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
         .formLogin { form -> form.disable() }
         .httpBasic { http -> http.disable() }
         .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter::class.java)
-        .authenticationProvider(authenticationProvider)
+//        .authenticationProvider(authenticationProvider)
         .userDetailsService(adminUserDetailsService)
         .build()
 

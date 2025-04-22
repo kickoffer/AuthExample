@@ -3,6 +3,7 @@ package kr.co.kickoffer.authexample.controller
 import kr.co.kickoffer.authexample.model.dto.JwtClaimDto
 import kr.co.kickoffer.authexample.service.AdminAuthenticationProvider
 import kr.co.kickoffer.authexample.service.JwtService
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -20,8 +21,12 @@ class AuthController(
     private val jwtService: JwtService
 ) {
 
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     @PostMapping("/admin/sign-in")
     fun signIn(@RequestBody request: LoginRequest): String {
+
+        logger.info("Sign In")
 
         val authentication = authenticationProvider.authenticate(
             UsernamePasswordAuthenticationToken(request.username, request.password)

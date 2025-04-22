@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import kr.co.kickoffer.authexample.service.JwtService
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -14,11 +15,15 @@ class JwtAuthenticationFilter(
     private val userDetailsService: UserDetailsService
 ): OncePerRequestFilter() {
 
+    private val logger = LoggerFactory.getLogger(JwtAuthenticationFilter::class.java)
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+        logger.info("Authentication filter started")
+
         val authHeader = request.getHeader("Authorization")
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
