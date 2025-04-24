@@ -17,6 +17,11 @@ class JwtAuthenticationFilter(
 
     private val logger = LoggerFactory.getLogger(JwtAuthenticationFilter::class.java)
 
+    // TODO: 슬라이딩 만료 패턴 로직
+
+    // TODO: 토큰 바인딩 전략 구현
+
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

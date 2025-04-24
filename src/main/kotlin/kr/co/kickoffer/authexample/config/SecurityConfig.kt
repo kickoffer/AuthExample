@@ -45,33 +45,32 @@ class SecurityConfig(
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
-        .csrf { csrf -> csrf.disable() }
-        .cors { cors -> cors.configurationSource(corsConfigurationSource()) }
-        .authorizeHttpRequests { auth ->
-            // Allow Public Access
-            auth.requestMatchers("/css/**").permitAll()
-            auth.requestMatchers("/js/**").permitAll()
-            auth.requestMatchers("/api/auth/**").permitAll()
+            .csrf { csrf -> csrf.disable() }
+            .cors { cors -> cors.configurationSource(corsConfigurationSource()) }
+            .authorizeHttpRequests { auth ->
+                // Allow Public Access
+                auth.requestMatchers("/css/**").permitAll()
+                auth.requestMatchers("/js/**").permitAll()
+                auth.requestMatchers("/api/auth/**").permitAll()
+                auth.requestMatchers("/admin/**").permitAll()
 
-            // Allow Authenticated Access
-//            auth.requestMatchers("/admin/**")
-//                .hasAnyRole("ADMIN")
-//                .anyRequest()
-//                .authenticated()
-        }
-        .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-        .formLogin { form -> form.disable() }
-        .httpBasic { http -> http.disable() }
-        .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter::class.java)
-//        .authenticationProvider(authenticationProvider)
-        .userDetailsService(adminUserDetailsService)
-        .build()
+                // Allow Authenticated Access
+    //            auth.requestMatchers("/admin/**")
+    //                .hasAnyRole("ADMIN")
+    //                .anyRequest()
+    //                .authenticated()
+            }
+            .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .formLogin { form -> form.disable() }
+            .httpBasic { http -> http.disable() }
+            .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter::class.java)
+    //        .authenticationProvider(authenticationProvider)
+            .userDetailsService(adminUserDetailsService)
+            .build()
 
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
 }

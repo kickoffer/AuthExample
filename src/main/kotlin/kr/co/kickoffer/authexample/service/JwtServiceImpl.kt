@@ -8,14 +8,16 @@ import java.util.Date
 
 import io.jsonwebtoken.Jwts.*
 import kr.co.kickoffer.authexample.model.dto.toClaims
+import kr.co.kickoffer.authexample.model.env.JwtProperties
 import java.time.LocalDateTime
 import java.time.ZoneId
 
 @Service
-class JwtServiceImpl: JwtService {
+class JwtServiceImpl(
+    private val jwtProperties: JwtProperties
+): JwtService {
 
-    private final val secretKey = "SpringSecurityKey_P@ssword_http://Spring.io"
-    private final val key = Keys.hmacShaKeyFor(secretKey.toByteArray())
+    private final val key = Keys.hmacShaKeyFor(jwtProperties.secretKey.toByteArray())
 
     override fun create(dto: JwtClaimDto): String {
         val expireAt = LocalDateTime.now().plusMinutes(1)

@@ -4,6 +4,7 @@ import kr.co.kickoffer.authexample.model.dto.JwtClaimDto
 import kr.co.kickoffer.authexample.service.AdminAuthenticationProvider
 import kr.co.kickoffer.authexample.service.JwtService
 import org.slf4j.LoggerFactory
+import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -13,6 +14,11 @@ import java.time.Instant
 
 
 data class LoginRequest(val username: String, val password: String)
+
+data class SignUpRequest(
+    val email: String,
+    val password: String
+)
 
 @RequestMapping("/api/auth")
 @RestController
@@ -41,6 +47,11 @@ class AuthController(
         )
 
         return jwtService.create(jwtClaimDto)
+    }
+
+    @PostMapping("/admin/sign-up")
+    fun signUp(@RequestBody request: SignUpRequest): ResponseEntity<String> {
+        return ResponseEntity.ok("Sign Up")
     }
 
     @PostMapping("/admin/sign-out")
