@@ -15,9 +15,17 @@ class JwtAuthenticationFilter(
     private val userDetailsService: UserDetailsService
 ): OncePerRequestFilter() {
 
-    private val logger = LoggerFactory.getLogger(JwtAuthenticationFilter::class.java)
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
-    // TODO: 슬라이딩 만료 패턴 로직
+    private val thresholdExpiredTime = 60 * 60 * 1000
+
+    // TODO: 토큰 만료 정책
+    private fun isTokenExpired(token: String): Boolean {
+        val payload = jwtService.extract(token)
+        val currentTime = System.currentTimeMillis()
+        return (currentTime - payload.iat) > thresholdExpiredTime
+    }
+
 
     // TODO: 토큰 바인딩 전략 구현
 

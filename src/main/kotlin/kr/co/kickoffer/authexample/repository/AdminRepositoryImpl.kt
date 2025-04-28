@@ -2,9 +2,11 @@ package kr.co.kickoffer.authexample.repository
 
 import kr.co.kickoffer.authexample.model.entity.Admin
 import kr.co.kickoffer.authexample.model.table.AdminTable
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
+import java.sql.SQLException
 
 @Repository
 class AdminRepositoryImpl : AdminRepository {
@@ -24,5 +26,16 @@ class AdminRepositoryImpl : AdminRepository {
                 )
             }
             .firstOrNull()
+    }
+
+    override fun create(admin: Admin): Unit = transaction {
+        AdminTable.insert {
+            it[uuid] = admin.uuid
+            it[name] = admin.name
+            it[password] = admin.password
+            it[role] = admin.role
+        }
+        .resultedValues?.firstOrNull()
+            ?: throw SQLException("Failed to insert admin")
     }
 }

@@ -32,8 +32,6 @@ class AuthController(
     @PostMapping("/admin/sign-in")
     fun signIn(@RequestBody request: LoginRequest): String {
 
-        logger.info("Sign In")
-
         val authentication = authenticationProvider.authenticate(
             UsernamePasswordAuthenticationToken(request.username, request.password)
         )
