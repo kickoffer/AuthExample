@@ -63,6 +63,15 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 
+    // https://mvnrepository.com/artifact/org.testcontainers/testcontainers
+    testImplementation("org.testcontainers:testcontainers:1.21.0")
+
+    // https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter
+    testImplementation("org.testcontainers:junit-jupiter:1.21.0")
+
+    // https://mvnrepository.com/artifact/org.testcontainers/mysql
+    testImplementation("org.testcontainers:mysql:1.21.0")
+
 }
 
 dependencyManagement {
