@@ -1,5 +1,8 @@
 package kr.co.kickoffer.authexample.repository
 
+import kr.co.kickoffer.authexample.common.db.randomUUIDBytes
+import kr.co.kickoffer.authexample.common.db.toUUID
+import kr.co.kickoffer.authexample.model.dto.CreateAdminDto
 import kr.co.kickoffer.authexample.model.entity.Admin
 import kr.co.kickoffer.authexample.model.table.AdminTable
 import org.jetbrains.exposed.sql.insert
@@ -17,7 +20,7 @@ class AdminRepositoryImpl : AdminRepository {
             .map {
                 Admin(
                     id = it[AdminTable.id],
-                    uuid = it[AdminTable.uuid],
+                    uuid = it[AdminTable.uuid].toUUID(),
                     name = it[AdminTable.name],
                     password = it[AdminTable.password],
                     role = it[AdminTable.role],
@@ -28,9 +31,8 @@ class AdminRepositoryImpl : AdminRepository {
             .firstOrNull()
     }
 
-    override fun create(admin: Admin): Unit = transaction {
+    override fun create(admin: CreateAdminDto): Unit = transaction {
         AdminTable.insert {
-            it[uuid] = admin.uuid
             it[name] = admin.name
             it[password] = admin.password
             it[role] = admin.role

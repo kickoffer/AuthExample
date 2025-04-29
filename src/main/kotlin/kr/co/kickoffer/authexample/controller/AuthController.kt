@@ -2,6 +2,7 @@ package kr.co.kickoffer.authexample.controller
 
 import kr.co.kickoffer.authexample.model.dto.JwtClaimDto
 import kr.co.kickoffer.authexample.service.AdminAuthenticationProvider
+import kr.co.kickoffer.authexample.service.AdminUserService
 import kr.co.kickoffer.authexample.service.JwtService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
@@ -24,7 +25,8 @@ data class SignUpRequest(
 @RestController
 class AuthController(
     private val authenticationProvider: AdminAuthenticationProvider,
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val adminUserService: AdminUserService
 ) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -49,6 +51,7 @@ class AuthController(
 
     @PostMapping("/admin/sign-up")
     fun signUp(@RequestBody request: SignUpRequest): ResponseEntity<String> {
+        adminUserService.create(request.email, request.password)
         return ResponseEntity.ok("Sign Up")
     }
 
